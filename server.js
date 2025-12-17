@@ -64,7 +64,24 @@ app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
 
-/* ---------------- START SERVER ---------------- */
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+const path = require('path');
+
+// Serve frontend
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Root route → student attendance page
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+// Admin page route (IMPORTANT)
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Server running on port ${PORT}`);
+});
+
