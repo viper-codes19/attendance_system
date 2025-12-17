@@ -1,4 +1,4 @@
-document.getElementById('studentId').addEventListener('keypress', function (e) {
+document.getElementById('studentId').addEventListener('keydown', function (e) {
   if (e.key === 'Enter') submitAttendance();
 });
 
@@ -10,7 +10,8 @@ function submitAttendance() {
   const msg = document.getElementById('msg');
 
   if (!course || !id || !session) {
-    msg.innerText = 'Please fill all fields';
+    msg.innerText = '❌ Fill all fields';
+    msg.className = 'error';
     return;
   }
 
@@ -18,7 +19,8 @@ function submitAttendance() {
     .then(res => res.json())
     .then(student => {
       if (!student.name) {
-        nameBox.innerText = 'Student not found';
+        msg.innerText = '❌ Student not found';
+        msg.className = 'error';
         return;
       }
 
@@ -33,9 +35,12 @@ function submitAttendance() {
           name: student.name,
           session
         })
-      });
+      })
+      .then(() => {
+        msg.innerText = '✅ Attendance submitted successfully';
+        msg.className = 'success';
 
-      msg.innerText = '✅ Attendance submitted';
-      document.getElementById('studentId').value = '';
+        document.getElementById('studentId').value = '';
+      });
     });
 }
