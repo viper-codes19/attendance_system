@@ -74,6 +74,16 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+const path = require('path');
+
+// Serve frontend
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Root route → student attendance page
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 // Admin page route (IMPORTANT)
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
