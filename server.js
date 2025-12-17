@@ -25,27 +25,9 @@ fs.writeFileSync(ATTENDANCE_FILE, JSON.stringify([]));
 }
 
 
-// ================= ADMIN LOGIN =================
-const ADMIN = {
-username: 'admin',
-password: 'admin123'
-};
+// ================= GET ALL ATTENDANCE (ADMIN – NO LOGIN) =================
 
 
-app.post('/admin/login', (req, res) => {
-const { username, password } = req.body;
-
-
-if (username === ADMIN.username && password === ADMIN.password) {
-return res.json({ success: true });
-}
-
-
-res.status(401).json({ success: false });
-});
-
-
-// ================= GET ALL ATTENDANCE =================
 app.get('/admin/attendance', (req, res) => {
 const data = JSON.parse(fs.readFileSync(ATTENDANCE_FILE));
 res.json(data);
