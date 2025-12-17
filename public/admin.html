@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin Login</title>
+<title>Admin</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -40,12 +40,12 @@ fetch('/admin/login', {
 method: 'POST',
 headers: { 'Content-Type': 'application/json' },
 body: JSON.stringify({
-username: document.getElementById('username').value.trim(),
-password: document.getElementById('password').value.trim()
+username: document.getElementById('username').value,
+password: document.getElementById('password').value
 })
 })
 .then(res => {
-if (!res.ok) throw new Error();
+if (!res.ok) throw Error();
 return res.json();
 })
 .then(() => loadAttendance())
@@ -54,10 +54,7 @@ return res.json();
 
 
 function loadAttendance() {
-document.getElementById('msg').innerText = 'Login successful';
-
-
-fetch('http://localhost:3000/admin/attendance')
+fetch('/admin/attendance')
 .then(res => res.json())
 .then(data => {
 document.getElementById('table').style.display = 'table';
