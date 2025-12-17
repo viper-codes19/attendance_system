@@ -1,35 +1,36 @@
 const express = require('express');
 const fs = require('fs');
-const path = require('path');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Serve frontend files
+// Serve frontend
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Files
-const STUDENTS = path.join(__dirname, 'students.json');
-const ATTENDANCE = path.join(__dirname, 'attendance.json');
+const STUDENTS = 'students.json';
+const ATTENDANCE = 'attendance.json';
 
 // Ensure attendance file exists
 if (!fs.existsSync(ATTENDANCE)) {
   fs.writeFileSync(ATTENDANCE, JSON.stringify([]));
 }
 
-/* ---------------- STUDENT LOOKUP ---------------- */
+// Root test route
+app.get('/api', (req, res) => {
+  res.send('Attendance backend is working');
+});
+
+// Get student by ID
 app.get('/student/:id', (req, res) => {
   const students = JSON.parse(fs.readFileSync(STUDENTS));
   const student = students.find(s => s.id === req.params.id);
   res.json(student || {});
 });
 
-/* ---------------- RECORD ATTENDANCE ---------------- */
+// Record attendance
 app.post('/attendance', (req, res) => {
   const data = JSON.parse(fs.readFileSync(ATTENDANCE));
 
@@ -45,12 +46,11 @@ app.post('/attendance', (req, res) => {
   res.json({ success: true });
 });
 
-/* ---------------- ADMIN LOGIN ---------------- */
+// Admin login
 const ADMIN = { username: 'admin', password: 'admin123' };
 
 app.post('/admin/login', (req, res) => {
   const { username, password } = req.body;
-
   if (username === ADMIN.username && password === ADMIN.password) {
     res.json({ success: true });
   } else {
@@ -58,25 +58,14 @@ app.post('/admin/login', (req, res) => {
   }
 });
 
-/* ---------------- ADMIN VIEW ATTENDANCE ---------------- */
+// Admin fetch attendance
 app.get('/admin/attendance', (req, res) => {
   const data = JSON.parse(fs.readFileSync(ATTENDANCE));
   res.json(data);
 });
 
-/* ---------------- FRONTEND ROUTES ---------------- */
-
-// Student page
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// Admin page
-app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
-});
-
-/* ---------------- START SERVER ---------------- */
+// Start server
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
