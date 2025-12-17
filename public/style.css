@@ -1,0 +1,53 @@
+body {
+  margin: 0;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #4e54c8, #8f94fb);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  background: #ffffff;
+  width: 320px;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+#studentName {
+  font-weight: bold;
+  color: #2ecc71;
+  margin-bottom: 10px;
+}
+
+#msg {
+  margin-top: 10px;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+#msg.success {
+  color: #2ecc71;
+  opacity: 1;
+}
+
+#msg.error {
+  color: #e74c3c;
+  opacity: 1;
+}
