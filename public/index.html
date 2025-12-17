@@ -1,19 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Attendance</title>
+  <meta charset="UTF-8">
+  <title>Class Attendance</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
-  <h2>📋 Class Attendance</h2>
+  <h2>📋 Attendance System</h2>
 
-  <input id="course" placeholder="Course Code">
-  <input id="studentId" placeholder="Scan / Enter ID">
+  <input id="course" placeholder="Course Code (e.g CSC 101)" />
+
+  <input
+    id="studentId"
+    placeholder="Scan or Enter Student ID then press Enter"
+    onkeydown="handleEnter(event)"
+  />
 
   <select id="session">
-    <option value="">Select Session</option>
+    <option value="">Select Session Block</option>
     <option>Session 1–2 (Friday)</option>
     <option>Session 4–7 (Saturday)</option>
     <option>Session 9–11 (Saturday)</option>
