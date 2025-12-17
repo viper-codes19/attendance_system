@@ -48,7 +48,12 @@ password: document.getElementById('password').value
 if (!res.ok) throw Error();
 return res.json();
 })
-.then(() => loadAttendance())
+.then(() => {
+  document.getElementById('msg').innerText = '✅ Login successful';
+  document.getElementById('msg').style.color = 'green';
+  loadAttendance();
+})
+
 .catch(() => document.getElementById('msg').innerText = 'Invalid login');
 }
 
