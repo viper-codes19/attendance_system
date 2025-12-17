@@ -1,53 +1,41 @@
-body {
-  margin: 0;
-  height: 100vh;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #4e54c8, #8f94fb);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+document.getElementById('studentId').addEventListener('keypress', function (e) {
+  if (e.key === 'Enter') submitAttendance();
+});
 
-.container {
-  background: #ffffff;
-  width: 320px;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  text-align: center;
-}
+function submitAttendance() {
+  const course = document.getElementById('course').value;
+  const id = document.getElementById('studentId').value;
+  const session = document.getElementById('session').value;
+  const nameBox = document.getElementById('studentName');
+  const msg = document.getElementById('msg');
 
-h2 {
-  margin-bottom: 20px;
-}
+  if (!course || !id || !session) {
+    msg.innerText = 'Please fill all fields';
+    return;
+  }
 
-input, select {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
+  fetch('/student/' + id)
+    .then(res => res.json())
+    .then(student => {
+      if (!student.name) {
+        nameBox.innerText = 'Student not found';
+        return;
+      }
 
-#studentName {
-  font-weight: bold;
-  color: #2ecc71;
-  margin-bottom: 10px;
-}
+      nameBox.innerText = '✔ ' + student.name;
 
-#msg {
-  margin-top: 10px;
-  font-weight: bold;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
+      fetch('/attendance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          course,
+          id,
+          name: student.name,
+          session
+        })
+      });
 
-#msg.success {
-  color: #2ecc71;
-  opacity: 1;
-}
-
-#msg.error {
-  color: #e74c3c;
-  opacity: 1;
+      msg.innerText = '✅ Attendance submitted';
+      document.getElementById('studentId').value = '';
+    });
 }
