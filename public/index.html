@@ -1,45 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>Class Attendance</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Attendance</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="container">
-    <h2>📋 Attendance System</h2>
+<div class="container">
+  <h2>📋 Class Attendance</h2>
 
-    <!-- Course -->
-    <input
-      type="text"
-      id="course"
-      placeholder="Course Code (e.g CSC 101)"
-    />
+  <input id="course" placeholder="Course Code" />
 
-    <!-- Student ID -->
-    <input
-      type="text"
-      id="studentId"
-      placeholder="Scan / Enter Student ID"
-      onkeyup="handleEnter(event)"
-    />
+  <input id="studentId" placeholder="Scan / Enter ID" />
 
-    <!-- Student Name (auto) -->
-    <p id="studentName"></p>
+  <select id="session">
+    <option value="">Select Session Block</option>
+    <option>Session 1–2 (Friday)</option>
+    <option>Session 4–7 (Saturday)</option>
+    <option>Session 9–11 (Saturday)</option>
+  </select>
 
-    <!-- Session Block -->
-    <select id="session">
-      <option value="">Select Session Block</option>
-      <option>Session 1–2 (Friday)</option>
-      <option>Session 4–7 (Saturday)</option>
-      <option>Session 9–11 (Saturday)</option>
-    </select>
+  <p id="studentName"></p>
+  <p id="msg"></p>
+</div>
 
-    <!-- Message -->
-    <p id="msg"></p>
-  </div>
-
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
