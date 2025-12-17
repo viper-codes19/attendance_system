@@ -1,54 +1,41 @@
-function handleEnter(event) {
-  if (event.key !== 'Enter') return;
+document.getElementById('studentId').addEventListener('keypress', function (e) {
+  if (e.key === 'Enter') submitAttendance();
+});
 
-  var course = document.getElementById('course').value;
-  var id = document.getElementById('studentId').value;
-  var session = document.getElementById('session').value;
-  var nameBox = document.getElementById('studentName');
-  var msg = document.getElementById('msg');
+function submitAttendance() {
+  const course = document.getElementById('course').value;
+  const id = document.getElementById('studentId').value;
+  const session = document.getElementById('session').value;
+  const nameBox = document.getElementById('studentName');
+  const msg = document.getElementById('msg');
 
-  if (course === '' || id === '' || session === '') {
-    showMessage('Please fill all fields', 'error');
+  if (!course || !id || !session) {
+    msg.innerText = 'Please fill all fields';
     return;
   }
 
-  // Fetch student info
-  fetch('http://localhost:3000/student/' + id)
+  fetch('/student/' + id)
     .then(res => res.json())
     .then(student => {
       if (!student.name) {
         nameBox.innerText = 'Student not found';
-        showMessage('Invalid ID', 'error');
         return;
       }
 
       nameBox.innerText = '✔ ' + student.name;
 
-      // Save attendance
-      fetch('http://localhost:3000/attendance', {
+      fetch('/attendance', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          course: course,
-          id: id,
+          course,
+          id,
           name: student.name,
-          session: session
+          session
         })
       });
 
-      showMessage('Attendance recorded successfully', 'success');
-
-      // Clear ID field for next student
+      msg.innerText = '✅ Attendance submitted';
       document.getElementById('studentId').value = '';
     });
-}
-
-function showMessage(text, type) {
-  var msg = document.getElementById('msg');
-  msg.innerText = text;
-  msg.className = type;
-
-  setTimeout(() => {
-    msg.className = '';
-  }, 3000);
 }
