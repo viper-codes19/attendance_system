@@ -1,5 +1,5 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   background: #f4f6f8;
   display: flex;
   justify-content: center;
@@ -9,23 +9,24 @@ body {
 
 .container {
   background: white;
-  padding: 20px;
-  width: 320px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,.1);
+  padding: 25px;
+  width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
 input, select {
   width: 100%;
-  padding: 8px;
-  margin-bottom: 10px;
+  padding: 10px;
+  margin: 6px 0;
 }
 
-#studentName {
+.success {
   color: green;
   font-weight: bold;
 }
 
-#msg {
-  margin-top: 10px;
+.error {
+  color: red;
+  font-weight: bold;
 }
