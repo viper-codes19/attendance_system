@@ -1,0 +1,27 @@
+function loadAttendance() {
+  fetch('/admin/attendance')
+    .then(res => res.json())
+    .then(data => {
+      const table = document.getElementById('table');
+      const body = document.querySelector('tbody');
+
+      table.style.display = 'table';
+      body.innerHTML = '';
+
+      if (data.length === 0) {
+        body.innerHTML = '<tr><td colspan=\"5\">No attendance records yet</td></tr>';
+        return;
+      }
+
+      data.forEach(r => {
+        body.innerHTML += `
+          <tr>
+            <td>${r.course}</td>
+            <td>${r.id}</td>
+            <td>${r.name}</td>
+            <td>${r.session}</td>
+            <td>${r.time}</td>
+          </tr>`;
+      });
+    });
+}
