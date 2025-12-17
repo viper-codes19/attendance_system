@@ -36,16 +36,16 @@
 
 <script>
 function login() {
-fetch('http://localhost:3000/admin/login', {
+fetch('/admin/login', {
 method: 'POST',
 headers: { 'Content-Type': 'application/json' },
 body: JSON.stringify({
-username: document.getElementById('username').value,
-password: document.getElementById('password').value
+username: document.getElementById('username').value.trim(),
+password: document.getElementById('password').value.trim()
 })
 })
 .then(res => {
-if (!res.ok) throw Error();
+if (!res.ok) throw new Error();
 return res.json();
 })
 .then(() => loadAttendance())
