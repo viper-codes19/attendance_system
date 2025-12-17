@@ -1,13 +1,4 @@
 <!DOCTYPE html>
-<html>
-<head>
-<title>Admin</title>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-
-<div class="container">
 <h2>🔐 Admin Login</h2>
 
 
@@ -48,12 +39,7 @@ password: document.getElementById('password').value
 if (!res.ok) throw Error();
 return res.json();
 })
-.then(() => {
-  document.getElementById('msg').innerText = '✅ Login successful';
-  document.getElementById('msg').style.color = 'green';
-  loadAttendance();
-})
-
+.then(() => loadAttendance())
 .catch(() => document.getElementById('msg').innerText = 'Invalid login');
 }
 
