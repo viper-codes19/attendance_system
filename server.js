@@ -27,9 +27,8 @@ app.post('/admin/login', (req, res) => {
 
   if (username === ADMIN.username && password === ADMIN.password) {
     res.json({ success: true });
-  } else {
+  } 
     res.status(401).json({ success: false });
-  }
 });
 
 // ===== GET STUDENT BY ID =====
@@ -61,6 +60,11 @@ app.get('/admin/attendance', (req, res) => {
   res.json(data);
 });
 
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+/* ---------------- START SERVER ---------------- */
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
