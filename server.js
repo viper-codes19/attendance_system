@@ -1,36 +1,27 @@
 const express = require('express');
 const fs = require('fs');
 const cors = require('cors');
-const path = require('path');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-// Serve frontend
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 
 const STUDENTS = 'students.json';
 const ATTENDANCE = 'attendance.json';
 
-// Ensure attendance file exists
 if (!fs.existsSync(ATTENDANCE)) {
   fs.writeFileSync(ATTENDANCE, JSON.stringify([]));
 }
 
-// Root test route
-app.get('/api', (req, res) => {
-  res.send('Attendance backend is working');
-});
-
-// Get student by ID
+/* ---------- STUDENT LOOKUP ---------- */
 app.get('/student/:id', (req, res) => {
   const students = JSON.parse(fs.readFileSync(STUDENTS));
   const student = students.find(s => s.id === req.params.id);
   res.json(student || {});
 });
 
-// Record attendance
+/* ---------- ATTENDANCE SUBMISSION ---------- */
 app.post('/attendance', (req, res) => {
   const data = JSON.parse(fs.readFileSync(ATTENDANCE));
 
@@ -46,11 +37,12 @@ app.post('/attendance', (req, res) => {
   res.json({ success: true });
 });
 
-// Admin login
+/* ---------- ADMIN LOGIN ---------- */
 const ADMIN = { username: 'admin', password: 'admin123' };
 
 app.post('/admin/login', (req, res) => {
   const { username, password } = req.body;
+
   if (username === ADMIN.username && password === ADMIN.password) {
     res.json({ success: true });
   } else {
@@ -58,14 +50,13 @@ app.post('/admin/login', (req, res) => {
   }
 });
 
-// Admin fetch attendance
+/* ---------- ADMIN VIEW ---------- */
 app.get('/admin/attendance', (req, res) => {
   const data = JSON.parse(fs.readFileSync(ATTENDANCE));
   res.json(data);
 });
 
-// Start server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () =>
+  console.log(`Server running on port ${PORT}`)
+);
