@@ -1,69 +1,29 @@
 <!DOCTYPE html>
-<h2>🔐 Admin Login</h2>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Attendance Records</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
+  <div class="container">
+    <h2>📋 Attendance Records</h2>
 
-<input id="username" placeholder="Username" />
-<input id="password" type="password" placeholder="Password" />
-<button onclick="login()">Login</button>
+    <table id="attendanceTable">
+      <thead>
+        <tr>
+          <th>Course</th>
+          <th>Student ID</th>
+          <th>Name</th>
+          <th>Session</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
-
-<p id="msg"></p>
-
-
-<table id="table" style="display:none">
-<thead>
-<tr>
-<th>Course</th>
-<th>ID</th>
-<th>Name</th>
-<th>Session</th>
-<th>Time</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
-</div>
-
-
-<script>
-function login() {
-fetch('/admin/login', {
-method: 'POST',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({
-username: document.getElementById('username').value,
-password: document.getElementById('password').value
-})
-})
-.then(res => {
-if (!res.ok) throw Error();
-return res.json();
-})
-.then(() => loadAttendance())
-.catch(() => document.getElementById('msg').innerText = 'Invalid login');
-}
-
-
-function loadAttendance() {
-fetch('/admin/attendance')
-.then(res => res.json())
-.then(data => {
-document.getElementById('table').style.display = 'table';
-const body = document.querySelector('tbody');
-body.innerHTML = '';
-
-
-data.forEach(r => {
-body.innerHTML += `<tr>
-<td>${r.course}</td>
-<td>${r.id}</td>
-<td>${r.name}</td>
-<td>${r.session}</td>
-<td>${r.time}</td>
-</tr>`;
-});
-});
-}
-</script>
+  <script src="admin.js"></script>
 </body>
 </html>
