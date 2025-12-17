@@ -1,32 +1,47 @@
 body {
-  font-family: Arial;
-  background: #f4f6f8;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
 .container {
   background: white;
   padding: 25px;
-  width: 300px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  width: 350px;
+  border-radius: 12px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 15px;
 }
 
 input, select {
   width: 100%;
   padding: 10px;
-  margin: 6px 0;
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+#studentName {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #2ecc71;
+}
+
+#msg {
+  margin-top: 10px;
+  font-weight: bold;
 }
 
 .success {
   color: green;
-  font-weight: bold;
 }
 
 .error {
   color: red;
-  font-weight: bold;
 }
