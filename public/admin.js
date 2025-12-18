@@ -1,24 +1,31 @@
 fetch('/admin/attendance')
-  .then(res => res.json())
+  .then(res => {
+    if (!res.ok) throw new Error('Request failed');
+    return res.json();
+  })
   .then(data => {
     const tbody = document.querySelector('#attendanceTable tbody');
     tbody.innerHTML = '';
 
-    data.forEach(record => {
-      const row = document.createElement('tr');
+    if (data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5">No records yet</td></tr>';
+      return;
+    }
 
-      row.innerHTML = `
-        <td>${record.course}</td>
-        <td>${record.studentId}</td>
-        <td>${record.name}</td>
-        <td>${record.session}</td>
-        <td>${new Date(record.time).toLocaleString()}</td>
+    data.forEach(item => {
+      const row = `
+        <tr>
+          <td>${item.course}</td>
+          <td>${item.studentId}</td>
+          <td>${item.name}</td>
+          <td>${item.session}</td>
+          <td>${item.time}</td>
+        </tr>
       `;
-
-      tbody.appendChild(row);
+      tbody.innerHTML += row;
     });
   })
   .catch(err => {
-    console.error(err);
     alert('Failed to load attendance records');
+    console.error(err);
   });
