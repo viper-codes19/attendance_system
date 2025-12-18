@@ -1,70 +1,51 @@
 const express = require('express');
 const fs = require('fs');
-const cors = require('cors');
-
+const path = require('path');
 
 const app = express();
-
-
-// IMPORTANT FOR RENDER
-const PORT = process.env.PORT || 3000;
-
-
-app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
+const DATA_FILE = path.join(__dirname, 'attendance.json');
 
-const STUDENTS_FILE = 'students.json';
-const ATTENDANCE_FILE = 'attendance.json';
-
-
-// Ensure attendance file exists
-if (!fs.existsSync(ATTENDANCE_FILE)) {
-fs.writeFileSync(ATTENDANCE_FILE, JSON.stringify([]));
+/* Ensure attendance.json exists */
+if (!fs.existsSync(DATA_FILE)) {
+  fs.writeFileSync(DATA_FILE, JSON.stringify([]));
 }
 
-
-// ================= GET ALL ATTENDANCE (ADMIN – NO LOGIN) =================
-
-
-app.get('/admin/attendance', (req, res) => {
-const data = JSON.parse(fs.readFileSync(ATTENDANCE_FILE));
-res.json(data);
-});
-
-
-// ================= GET STUDENT BY ID =================
-app.get('/student/:id', (req, res) => {
-const students = JSON.parse(fs.readFileSync(STUDENTS_FILE));
-const student = students.find(s => s.id === req.params.id);
-
-
-if (!student) return res.json({});
-res.json(student);
-});
-
-
-// ================= SAVE ATTENDANCE =================
+/* ===== SAVE ATTENDANCE ===== */
 app.post('/attendance', (req, res) => {
-const data = JSON.parse(fs.readFileSync(ATTENDANCE_FILE));
+  const { course, studentId, name, session } = req.body;
 
+  if (!course || !studentId || !session) {
+    return res.status(400).json({ message: 'Missing fields' });
+  }
 
-data.push({
-course: req.body.course,
-id: req.body.id,
-name: req.body.name,
-session: req.body.session,
-time: new Date().toLocaleString()
+  const data = JSON.parse(fs.readFileSync(DATA_FILE));
+  data.push({
+    course,
+    studentId,
+    name: name || 'Unknown',
+    session,
+    time: new Date().toLocaleString()
+  });
+
+  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+  res.json({ message: 'Attendance recorded successfully' });
 });
 
-
-fs.writeFileSync(ATTENDANCE_FILE, JSON.stringify(data, null, 2));
-res.json({ message: 'Attendance recorded' });
+/* ===== ADMIN: VIEW ATTENDANCE ===== */
+app.get('/admin/attendance', (req, res) => {
+  try {
+    const data = JSON.parse(fs.readFileSync(DATA_FILE));
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to load attendance' });
+  }
 });
 
-
-// ================= START SERVER =================
+/* ===== START SERVER ===== */
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-console.log(`✅ Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
